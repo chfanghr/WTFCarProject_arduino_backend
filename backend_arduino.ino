@@ -2,8 +2,8 @@
 #include "spi_slave.h"
 
 #define DEBUG
-const uint8_t motor[]{3, 5, 6, 9};
 
+const uint8_t motor[]{3, 5, 6, 9};
 uint8_t motor_pwm[] = {0, 0, 0, 0};
 
 void update_pwm_value(buffer buf) {
