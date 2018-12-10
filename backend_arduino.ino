@@ -10,7 +10,7 @@ void update_pwm_value(buffer buf) {
     if (buf.size < 4)return;
 #ifdef DEBUG
     for (auto i = 0; i < buf.size; i++)
-        Serial.print(static_cast<char>(buf.data));
+        Serial.print(static_cast<char>(buf.data[i]));
     Serial.println();
 #endif
     for (auto i = 0; i < 4; i++)
