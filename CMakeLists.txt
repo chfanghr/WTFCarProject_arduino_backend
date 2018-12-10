@@ -32,7 +32,7 @@ set(${LIB_NAME} spi_slave.h)
 
 #### Additional settings for programmer. From programmers.txt
 set(${PROJECT_NAME}_PROGRAMMER arduinoisp)
-# set(${PROJECT_NAME}_PORT /dev/cu.usbserial-00000000)
+set(${PROJECT_NAME}_PORT /dev/ttyUSB1)
 # set(pro.upload.speed 9600)
 
 ## Verbose build process
