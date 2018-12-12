@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include "User_Setup.h"
 
-const uint8_t motor_pin[] = {3/*a*/, 5/*b*/, 6/*c*/, 9/*d*/};
+const uint8_t motor_pin[] = {3/*A1*/, 5/*A2*/, 6/*B1*/, 9/*B2*/};
 const uint8_t led_pin = 13;
 const uint8_t i2c_addr = 0x30;
 
