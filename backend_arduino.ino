@@ -7,20 +7,22 @@ const uint8_t led_pin = 13;
 const uint8_t i2c_addr = 0x30;
 
 void rec(int) {
-    PRINT_DEBUG_MSG;
+    PRINT_FUNCTION;
     noInterrupts();
     if (Wire.available() >= 4)
         for (auto i = 0; i < 4; i++) {
             auto v = Wire.read();
             if (v < 0)v = 0;
             else if (v > 255)v = 255;
+            PRINT_DEBUG_MSG(v);
             analogWrite(motor_pin[i], v);
         }
     interrupts();
 }
 
 void setup() {
-    PRINT_DEBUG_MSG;
+    DEGUG_INIT;
+    PRINT_FUNCTION;
     for (auto i = 0; i < 4; i++) {
         pinMode(motor_pin[i], OUTPUT);
         analogWrite(motor_pin[i], 0);
@@ -34,7 +36,7 @@ void setup() {
 }
 
 void loop() {
-    PRINT_DEBUG_MSG;
+    PRINT_FUNCTION;
     digitalWrite(led_pin, HIGH);
     delay(500);
     digitalWrite(led_pin, LOW);
