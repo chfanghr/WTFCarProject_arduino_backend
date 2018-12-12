@@ -3,8 +3,8 @@ set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/ArduinoToolchain.cmake)
 set(CMAKE_CXX_STANDARD 17)
 set(PROJECT_NAME backend_arduino)
 
-set(${PROJECT_NAME}_BOARD pro)
-set(ARDUINO_CPU 16MHzatmega328)
+set(${PROJECT_NAME}_BOARD uno)
+# set(ARDUINO_CPU)
 project(${PROJECT_NAME})
 
 # Define additional source and header files or default arduino sketch files
@@ -28,12 +28,10 @@ set(${PROJECT_NAME}_SKETCH backend_arduino.ino)
 # For nested library sources replace ${LIB_NAME} with library name for each library
 # set(_RECURSE true)
 
-set(${LIB_NAME} spi_slave.h)
-
 #### Additional settings for programmer. From programmers.txt
 set(${PROJECT_NAME}_PROGRAMMER arduinoisp)
 set(${PROJECT_NAME}_PORT /dev/ttyUSB1)
-# set(pro.upload.speed 9600)
+# set(uno.upload.speed 9600)
 
 ## Verbose build process
 set(${PROJECT_NAME}_AFLAGS -v)

@@ -1,4 +1,3 @@
-#ifdef _BACKEND_ARDUINO_USER_SETUP_H_
-#define _BACKEND_ARDUINO_USER_SETUP_H_
+#pragma once
 
-#endif //_BACKEND_ARDUINO_USER_SETUP_H_
+#define DEBUG 1

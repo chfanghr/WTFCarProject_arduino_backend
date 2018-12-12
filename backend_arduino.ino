@@ -1,31 +1,37 @@
 #include <Arduino.h>
-#include "spi_slave.h"
+#include <Wire.h>
+#include "User_Setup.h"
 
-#define DEBUG
+const uint8_t motor_pin[] = {3, 5, 6, 9};
+const uint8_t led_pin = 13;
+const uint8_t i2c_addr = 0x30;
 
-const uint8_t motor[]{3, 5, 6, 9};
-uint8_t motor_pwm[] = {0, 0, 0, 0};
-
-void update_pwm_value(buffer buf) {
-    if (buf.size < 4)return;
-#ifdef DEBUG
-    for (auto i = 0; i < buf.size; i++)
-        Serial.print(static_cast<char>(buf.data[i]));
-    Serial.println();
-#endif
+void i2c_recv_handler(int) {
+    int motor_pwm[] = {0, 0, 0, 0};
+    for (auto i = 0; i < 4; i++) {
+        while (!Wire.available());
+        motor_pwm[i] = Wire.read();
+    }
     for (auto i = 0; i < 4; i++)
-        motor_pwm[i] = buf.data[i];
+        analogWrite(motor_pin[i], motor_pwm[i]);
 }
 
 void setup() {
-    SPI_slave.set_ss(3);
-    SPI_slave.on_data(update_pwm_value);
-    SPI_slave.begin();
-    for (auto i = 0; i < 4; i++)
-        pinMode(motor[i], OUTPUT);
+    for (auto i = 0; i < 4; i++) {
+        pinMode(motor_pin[i], OUTPUT);
+        analogWrite(motor_pin[i], 0);
+    }
+
+    pinMode(led_pin, OUTPUT);
+    digitalWrite(led_pin, HIGH);
+
+    Wire.begin(i2c_addr);
+    Wire.onReceive(i2c_recv_handler);
 }
 
 void loop() {
-    for (auto i = 0; i < 4; i++)
-        analogWrite(motor[i], motor_pwm[i]);
+    digitalWrite(led_pin, HIGH);
+    delay(500);
+    digitalWrite(led_pin, LOW);
+    delay(500);
 }
