@@ -7,7 +7,7 @@ using namespace ArduinoJson;
 DynamicJsonDocument JsonMessage(100);
 int CommandType;
 int CommandMethod;
-int CommandStatus=1;
+int CommandStatus = 1;
 uint8_t PinNumber;
 uint8_t PinValue;
 int Param = 0;
@@ -21,7 +21,7 @@ void setup() {
 }
 
 void receiveEvent(int) {
-    DeserializationError error = deserializeJson(JsonMessage,Wire);
+    DeserializationError error = deserializeJson(JsonMessage, Wire);
     if (error) {
         Serial.print(F("deserializeJson() failed: "));
         Serial.println(error.c_str());
@@ -35,49 +35,49 @@ void receiveEvent(int) {
 
     JsonMessage.clear();
 
-    switch(CommandType){
+    switch (CommandType) {
         case 0:
             //CommandGpio
-            switch (CommandMethod){
+            switch (CommandMethod) {
                 case 0:
                     //GpioPinmode
-                    switch (PinValue){
+                    switch (PinValue) {
                         case 0:
-                            pinMode(PinNumber,INPUT);
+                            pinMode(PinNumber, INPUT);
                             break;
 
                         case 1:
-                            pinMode(PinNumber,INPUT_PULLUP);
+                            pinMode(PinNumber, INPUT_PULLUP);
                             break;
                         case 2:
-                            pinMode(PinNumber,INPUT);
+                            pinMode(PinNumber, INPUT);
                             break;
                         case 3:
-                            pinMode(PinNumber,OUTPUT);
+                            pinMode(PinNumber, OUTPUT);
 
                     }
 
                 case 1:
                     //GpioDigitalwrite
-                    switch(PinValue){
+                    switch (PinValue) {
                         case 0:
-                            digitalWrite(PinNumber,HIGH);
+                            digitalWrite(PinNumber, HIGH);
                             break;
                         case 1:
-                            digitalWrite(PinNumber,LOW);
+                            digitalWrite(PinNumber, LOW);
                             break;
                     }
                 case 2:
                     //GpioDigitalread
-                    Param=digitalRead(PinNumber);
+                    Param = digitalRead(PinNumber);
                     break;
                 case 3:
                     //GpioAnalogwrite
-                    analogWrite(PinNumber,PinValue);
+                    analogWrite(PinNumber, PinValue);
                     break;
                 case 4:
                     //GpioAnalogread
-                    Param=analogRead(PinNumber);
+                    Param = analogRead(PinNumber);
                     break;
                 default:
                     goto error;
@@ -91,21 +91,20 @@ void receiveEvent(int) {
         case 4:
             //CommandData
         default:
-            error:
-                Serial.print("Operation failed.");
-                CommandStatus = 0;
-    }    Wire.print();
-
+        error:
+            Serial.print("Operation failed.");
+            CommandStatus = 0;
+    }
 
 
 }
 
 void requestEvent() {
-    JsonMessage["type"]=CommandType;
-    JsonMessage["status"]=CommandStatus;
+    JsonMessage["type"] = CommandType;
+    JsonMessage["status"] = CommandStatus;
     JsonArray CommandParam = JsonMessage.createNestedArray("param");
     CommandParam.add(Param);
-    serializeJson(JsonMessage,Wire);
+    serializeJson(JsonMessage, Wire);
 }
 
 void loop() {
