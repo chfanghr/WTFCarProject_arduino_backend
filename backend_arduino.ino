@@ -1,7 +1,8 @@
 #include <Wire.h>
 #include <Arduino.h>
-#include "ArduinoJson-v6.9.1 (1).hpp"
+#include "ArduinoJson-v6.9.1.hpp"
 
+//#define DEBUG
 using namespace ArduinoJson;
 
 DynamicJsonDocument JsonMessage(100);
@@ -14,7 +15,9 @@ int Param = 0;
 const uint8_t i2c_addr = 9;
 
 void setup() {
+    #ifdef DEBUG
     Serial.begin(9600);
+    #endif
     Wire.begin(i2c_addr);
     Wire.onRequest(requestEvent);
     Wire.onReceive(receiveEvent);
@@ -23,8 +26,10 @@ void setup() {
 void receiveEvent(int) {
     DeserializationError error = deserializeJson(JsonMessage, Wire);
     if (error) {
+        #ifdef DEBUG
         Serial.print(F("deserializeJson() failed: "));
         Serial.println(error.c_str());
+        #endif
         return;
     }
 
